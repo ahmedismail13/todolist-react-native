@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { UserContext } from "./src/context/user.context";
+import SideBar from "./src/navigation/SideBar";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -18,7 +19,7 @@ export default function App() {
     <NavigationContainer>
       <UserContext.Provider value={{ user, setUser }}>
         {user ? (
-          <Drawer.Navigator>
+          <Drawer.Navigator drawerContent={(props) => <SideBar {...props} />}>
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="Profile" component={Profile} />
           </Drawer.Navigator>

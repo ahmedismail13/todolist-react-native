@@ -10,15 +10,16 @@ const TodoItem = (props) => {
 
   const [isEditable, setIsEditable] = useState(false);
 
-  const openEditTextHandler = () => {
-    setIsEditable(true);
+  const editTextHandler = () => {
+    setIsEditable((prev) => !prev);
   };
 
   return (
     <View style={styles.container}>
       <TextInput
         editable={isEditable}
-        onPressIn={openEditTextHandler}
+        onPressIn={editTextHandler}
+        onSubmitEditing={editTextHandler}
         value={title}
         onChangeText={(title) => updateTodo(id, title)}
       />
@@ -53,7 +54,6 @@ const styles = StyleSheet.create({
     borderColor: "rgpa(255,0,0,0.2)",
     flexDirection: "row",
     paddingHorizontal: 18,
-    backgroundColor: "gold",
   },
   iconsContainer: {
     flexDirection: "row",
