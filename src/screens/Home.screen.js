@@ -1,8 +1,15 @@
 import { StyleSheet, Text, SafeAreaView, View } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import Button from "../components/UI/Button/Button.component";
 import TodoList from "../components/TodoList/TodoList.component";
 import TodoInput from "../components/TodoInput/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
   const [todo, setTodo] = useState("");
@@ -38,6 +45,37 @@ const Home = () => {
         return item;
       });
     });
+  }, []);
+
+  const saveTodoListToStorage = async () => {
+    try {
+      await AsyncStorage.setItem("todoList", JSON.stringify(todoList));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      saveTodoListToStorage();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [todoList]);
+
+  const getTodoListFromStorage = async () => {
+    try {
+      const todoList = await AsyncStorage.getItem("todoList");
+      if (todoList !== null) {
+        setTodoList(JSON.parse(todoList));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useLayoutEffect(() => {
+    getTodoListFromStorage();
   }, []);
 
   return (

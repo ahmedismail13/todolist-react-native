@@ -1,21 +1,33 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "../components/UI/Button/Button.component";
 import { UserContext } from "../context/user.context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const handleLogin = () => {
-    if (username === "Admin" && password === "123")
-      setUser({
-        id: 1,
-        name: "Ahmed Ismail",
-        email: "ahmed.ismail@timestack.com",
-      });
-    else setUser(null);
+  const userData = {
+    id: 1,
+    name: "Ahmed Ismail",
+    email: "ahmed.ismail@timestack.com",
+  };
+
+  const handleLogin = async () => {
+    if (username === "Admin" && password === "123") {
+      setUser(userData);
+      await setUserInStorage(userData);
+    }
+  };
+
+  const setUserInStorage = async (currentUser) => {
+    try {
+      await AsyncStorage.setItem("currentUser", JSON.stringify(currentUser));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
