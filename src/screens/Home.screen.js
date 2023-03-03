@@ -1,87 +1,31 @@
 import { StyleSheet, Text, SafeAreaView, View } from "react-native";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useCallback, useContext, useState } from "react";
 import Button from "../components/UI/Button/Button.component";
 import TodoList from "../components/TodoList/TodoList.component";
 import TodoInput from "../components/TodoInput/index";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TodoListContext } from "../context/todolist.context";
 
 const Home = () => {
-  const [todo, setTodo] = useState("");
-  const [todoList, setTodoList] = useState([]);
-
-  const todoListHandler = useCallback(() => {
-    setTodoList((prevTodoList) => [
-      ...prevTodoList,
-      { id: prevTodoList.length, title: todo, isComplete: false },
-    ]);
-    setTodo("");
-  }, [todo]);
+  const { todoList, deleteTodoItem, completeTodoItem, editTodoItem } =
+    useContext(TodoListContext);
 
   const deleteTodoHandler = useCallback((id) => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.filter((item) => item.id !== id);
-    });
+    deleteTodoItem(id);
   }, []);
 
   const completeTodoHandler = useCallback((id) => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.map((item, index) => {
-        if (item.id === id) item.isComplete = !item.isComplete;
-        return item;
-      });
-    });
+    completeTodoItem(id);
   }, []);
 
   const updateTodoHandler = useCallback((id, title) => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.map((item, index) => {
-        if (item.id === id) item.title = title;
-        return item;
-      });
-    });
-  }, []);
-
-  const saveTodoListToStorage = async () => {
-    try {
-      await AsyncStorage.setItem("todoList", JSON.stringify(todoList));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    try {
-      saveTodoListToStorage();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [todoList]);
-
-  const getTodoListFromStorage = async () => {
-    try {
-      const todoList = await AsyncStorage.getItem("todoList");
-      if (todoList !== null) {
-        setTodoList(JSON.parse(todoList));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useLayoutEffect(() => {
-    getTodoListFromStorage();
+    editTodoItem(id, title);
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={Styles.container}>
-        <TodoInput todo={todo} setTodo={setTodo} />
+        <TodoInput />
+        {/* todo={todo} setTodo={setTodo}  */}
         <View style={Styles.statsView}>
           <Text>
             Complete:{" "}
@@ -99,11 +43,11 @@ const Home = () => {
           completeTodo={completeTodoHandler}
           updateTodo={updateTodoHandler}
         />
-        <Button
+        {/* <Button
           title="Add"
           style={{ marginHorizontal: 12 }}
           onPress={todoListHandler}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   );

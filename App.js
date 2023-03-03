@@ -4,13 +4,16 @@ import Profile from "./src/screens/Profile.screen";
 import Login from "./src/screens/Login.screen";
 import { useLayoutEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+// import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { UserContext } from "./src/context/user.context";
-import SideBar from "./src/navigation/SideBar";
+// import SideBar from "./src/navigation/SideBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const Drawer = createDrawerNavigator();
+import TabBar from "./src/navigation/TabBar";
+import { TodoListProvider } from "./src/context/todolist.context";
+// const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -36,10 +39,16 @@ export default function App() {
     <NavigationContainer>
       <UserContext.Provider value={{ user, setUser }}>
         {user ? (
-          <Drawer.Navigator drawerContent={(props) => <SideBar {...props} />}>
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="Profile" component={Profile} />
-          </Drawer.Navigator>
+          <TodoListProvider>
+            {/* <Drawer.Navigator drawerContent={(props) => <SideBar {...props} />}>
+              <Drawer.Screen name="Home" component={Home} />
+              <Drawer.Screen name="Profile" component={Profile} />
+            </Drawer.Navigator> */}
+            <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
+              <Tab.Screen name="Home" component={Home} />
+              <Tab.Screen name="Profile" component={Profile} />
+            </Tab.Navigator>
+          </TodoListProvider>
         ) : (
           <Stack.Navigator>
             <Stack.Screen name="Login" component={Login} />

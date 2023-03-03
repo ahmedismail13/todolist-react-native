@@ -1,8 +1,9 @@
-import { StyleSheet, TextInput, Text, View } from "react-native";
-import React from "react";
+import { TextInput, View } from "react-native";
+import React, { useContext } from "react";
+import { TodoListContext } from "../../context/todolist.context";
 
-const index = (props) => {
-  const { todo, setTodo } = props;
+const index = () => {
+  const { todo, setTodo } = useContext(TodoListContext);
   return (
     <View
       style={{
