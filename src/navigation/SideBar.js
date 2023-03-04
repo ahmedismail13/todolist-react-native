@@ -8,23 +8,45 @@ const SideBar = (props) => {
   const { user, setUser } = useContext(UserContext);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flexDirection: "row" }}>
-        <Image
-          style={{ height: 64, width: 64, borderRadius: 48, marginLeft: 10 }}
-          source={require("../../assets/ismail.jpg")}
-        />
-        <View style={{ marginLeft: 10, justifyContent: "center" }}>
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>{user.name}</Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: "gray",
-              textTransform: "capitalize",
-            }}
-          >
-            {user.email.split("@")[1].split(".")[0]}
-          </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{ height: 64, width: 64, borderRadius: 48, marginLeft: 10 }}
+            source={require("../../assets/ismail.jpg")}
+          />
+          <View style={{ marginLeft: 10, justifyContent: "center" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              {user.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: "gray",
+                textTransform: "capitalize",
+              }}
+            >
+              {user.email.split("@")[1].split(".")[0]}
+            </Text>
+          </View>
         </View>
+        <TouchableOpacity
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: 35,
+          }}
+          onPress={() => {
+            props.navigation.toggleDrawer();
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: "bold" }}>x</Text>
+        </TouchableOpacity>
       </View>
       <DrawerContentScrollView {...props}>
         <DrawerItem

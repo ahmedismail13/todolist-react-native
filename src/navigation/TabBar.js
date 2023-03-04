@@ -4,7 +4,8 @@ import React, { useContext } from "react";
 import { TodoListContext } from "../context/todolist.context";
 
 const TabBar = (props) => {
-  const { todo, addTodoItem } = useContext(TodoListContext);
+  const { todo, setTodo, addTodoItem } = useContext(TodoListContext);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -22,7 +23,10 @@ const TabBar = (props) => {
           justifyContent: "center",
           alignItems: "center",
         }}
-        onPress={() => addTodoItem(todo)}
+        onPress={() => {
+          addTodoItem(todo);
+          setTodo("");
+        }}
       >
         <View style={styles.buttonView}>
           <Text style={styles.button}>+</Text>
@@ -31,13 +35,15 @@ const TabBar = (props) => {
 
       <TouchableOpacity
         style={styles.card}
-        onPress={() => props.navigation.navigate("Profile")}
+        onPress={() => {
+          props.navigation.toggleDrawer();
+        }}
       >
         <Image
           style={{ height: 25, aspectRatio: 1 }}
           source={require("../../assets/profile.png")}
         />
-        <Text>Profile</Text>
+        <Text>Settings</Text>
       </TouchableOpacity>
     </View>
   );
@@ -52,6 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "row",
+    backgroundColor: "white",
   },
   card: {
     justifyContent: "center",

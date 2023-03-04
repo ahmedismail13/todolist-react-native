@@ -4,17 +4,29 @@ import Profile from "./src/screens/Profile.screen";
 import Login from "./src/screens/Login.screen";
 import { useLayoutEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-// import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { UserContext } from "./src/context/user.context";
-// import SideBar from "./src/navigation/SideBar";
+import SideBar from "./src/navigation/SideBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TabBar from "./src/navigation/TabBar";
 import { TodoListProvider } from "./src/context/todolist.context";
-// const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
+
+const TabStack = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <TabBar {...props} />}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
+  );
+};
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -40,19 +52,21 @@ export default function App() {
       <UserContext.Provider value={{ user, setUser }}>
         {user ? (
           <TodoListProvider>
-            {/* <Drawer.Navigator drawerContent={(props) => <SideBar {...props} />}>
-              <Drawer.Screen name="Home" component={Home} />
-              <Drawer.Screen name="Profile" component={Profile} />
-            </Drawer.Navigator> */}
-            <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-              <Tab.Screen name="Home" component={Home} />
-              <Tab.Screen name="Profile" component={Profile} />
-            </Tab.Navigator>
+            <Drawer.Navigator
+              screenOptions={{
+                headerShown: false,
+                drawerStyle: { width: "100%" },
+                swipeEdgeWidth: 0,
+              }}
+              drawerContent={(props) => <SideBar {...props} />}
+            >
+              <Drawer.Screen name="TabNav" component={TabStack} />
+            </Drawer.Navigator>
           </TodoListProvider>
         ) : (
-          <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} />
-          </Stack.Navigator>
+          <LoginStack.Navigator>
+            <LoginStack.Screen name="Login" component={Login} />
+          </LoginStack.Navigator>
         )}
       </UserContext.Provider>
     </NavigationContainer>
