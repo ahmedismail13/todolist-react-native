@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import TodoItem from "../TodoItem/TodoItem.component";
 
 const TodoList = (props) => {
@@ -21,11 +21,7 @@ const TodoList = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        data={todoData.reduce((acc, cur) => {
-          if (!cur.isComplete) acc.unshift(cur);
-          else acc.push(cur);
-          return acc;
-        }, [])}
+        data={todoData}
         keyExtractor={(item, index) => index}
         renderItem={renderItem}
         style={{ flex: 1, paddingHorizontal: 12 }}
