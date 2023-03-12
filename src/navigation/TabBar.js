@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import {} from "@react-navigation/bottom-tabs";
 import React, { useContext } from "react";
 import { TodoListContext } from "../context/todolist.context";
+import { SheetManager } from "react-native-actions-sheet";
 
 const TabBar = (props) => {
   const { todo, setTodo, addTodoItem } = useContext(TodoListContext);
@@ -24,8 +25,19 @@ const TabBar = (props) => {
           alignItems: "center",
         }}
         onPress={() => {
-          addTodoItem(todo);
-          setTodo("");
+          //Profile screen
+          if (props.state.index === 0) {
+            addTodoItem(todo);
+            setTodo("");
+          } else {
+            SheetManager.show("action-sheet", {
+              payload: {
+                todo,
+                setTodo,
+                addTodoItem,
+              },
+            });
+          }
         }}
       >
         <View style={styles.buttonView}>

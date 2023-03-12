@@ -1,6 +1,5 @@
 import { StyleSheet, Text, SafeAreaView, View } from "react-native";
-import React, { useCallback, useContext, useState } from "react";
-import Button from "../components/UI/Button/Button.component";
+import React, { useCallback, useContext } from "react";
 import TodoList from "../components/TodoList/TodoList.component";
 import TodoInput from "../components/TodoInput/index";
 import { TodoListContext } from "../context/todolist.context";
@@ -25,7 +24,6 @@ const Home = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={Styles.container}>
         <TodoInput />
-        {/* todo={todo} setTodo={setTodo}  */}
         <View style={Styles.statsView}>
           <Text>
             Complete:{" "}

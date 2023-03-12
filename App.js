@@ -15,6 +15,8 @@ import { TodoListProvider } from "./src/context/todolist.context";
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const LoginStack = createNativeStackNavigator();
+import { SheetProvider } from "react-native-actions-sheet";
+import "./src/components/UI/ActionSheet/ActionSheet.component";
 
 const TabStack = () => {
   return (
@@ -50,24 +52,26 @@ export default function App() {
   return (
     <NavigationContainer>
       <UserContext.Provider value={{ user, setUser }}>
-        {user ? (
-          <TodoListProvider>
-            <Drawer.Navigator
-              screenOptions={{
-                headerShown: false,
-                drawerStyle: { width: "100%" },
-                swipeEdgeWidth: 0,
-              }}
-              drawerContent={(props) => <SideBar {...props} />}
-            >
-              <Drawer.Screen name="TabNav" component={TabStack} />
-            </Drawer.Navigator>
-          </TodoListProvider>
-        ) : (
-          <LoginStack.Navigator>
-            <LoginStack.Screen name="Login" component={Login} />
-          </LoginStack.Navigator>
-        )}
+        <SheetProvider>
+          {user ? (
+            <TodoListProvider>
+              <Drawer.Navigator
+                screenOptions={{
+                  headerShown: false,
+                  drawerStyle: { width: "100%" },
+                  swipeEdgeWidth: 0,
+                }}
+                drawerContent={(props) => <SideBar {...props} />}
+              >
+                <Drawer.Screen name="TabNav" component={TabStack} />
+              </Drawer.Navigator>
+            </TodoListProvider>
+          ) : (
+            <LoginStack.Navigator>
+              <LoginStack.Screen name="Login" component={Login} />
+            </LoginStack.Navigator>
+          )}
+        </SheetProvider>
       </UserContext.Provider>
     </NavigationContainer>
   );
