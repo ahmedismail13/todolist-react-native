@@ -25,7 +25,7 @@ const todoListReducer = (state, action) => {
       return [
         ...state,
         {
-          id: state.length,
+          id: Math.floor(Math.random() * 10000) + 1,
           title: action.payload,
           isComplete: false,
         },
